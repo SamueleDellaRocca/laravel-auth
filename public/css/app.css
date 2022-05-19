@@ -12178,3 +12178,7 @@ fieldset:disabled .btn {
   }
 }
 
+.pagination {
+  justify-content: center;
+}
+

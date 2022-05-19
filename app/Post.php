@@ -9,6 +9,12 @@ class Post extends Model
 {
     protected $fillable = ['title', 'content', 'slug'];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+
     static public function generateSlug($originalStr) {
         $baseSlug = Str::of($originalStr)->slug('-');
         $slug = $baseSlug;
