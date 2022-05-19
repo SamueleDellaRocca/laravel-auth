@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -13,6 +14,25 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public $validators = [
+        'title'     => 'required|max:100',
+        'content'   => 'required'
+    ];
+
+    private function getValidators($model) {
+        return [
+            'title'     => 'required|max:100',
+            'slug' => [
+                'required',
+                Rule::unique('posts')->ignore($model),
+                'max:100'
+            ],
+            'content'   => 'required'
+        ];
+    }
+
+
     public function index()
     {
         $posts = Post::paginate(25);
@@ -27,7 +47,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.posts.create');
     }
 
     /**
@@ -38,7 +58,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate($this->getValidators(null));
+
+        $post = Post::create($request->all());
+        
+        return redirect()->route('admin.posts.show', $post->slug);
     }
 
     /**
@@ -60,7 +84,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -72,7 +96,9 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $request->validate($this->getValidators($post));
+        $post->update($request->all());
+        return redirect()->route('admin.posts.show', $post->slug);
     }
 
     /**
