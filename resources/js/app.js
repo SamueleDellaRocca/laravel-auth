@@ -30,3 +30,24 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
 });
+
+
+
+
+const overlay = document.querySelector('.overlay');
+if (overlay) {
+    const form = overlay.querySelector('.form');
+
+    document.querySelectorAll('.btn_delete').forEach(button => {
+        button.addEventListener('click', function () {
+            overlay.classList.remove('d-none');
+        });
+    });
+
+
+    document.getElementById('btn-no').addEventListener('click', function () {
+        form.action = '';
+        overlay.classList.add('d-none');
+    })
+
+}

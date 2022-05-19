@@ -40125,6 +40125,20 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 var app = new Vue({
   el: '#app'
 });
+var overlay = document.querySelector('.overlay');
+
+if (overlay) {
+  var form = overlay.querySelector('.form');
+  document.querySelectorAll('.btn_delete').forEach(function (button) {
+    button.addEventListener('click', function () {
+      overlay.classList.remove('d-none');
+    });
+  });
+  document.getElementById('btn-no').addEventListener('click', function () {
+    form.action = '';
+    overlay.classList.add('d-none');
+  });
+}
 
 /***/ }),
 
